@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# 데이터
+# 데이터 정의
 data = {
     '연도': [2020, 2021, 2022, 2023, 2024, 2025],
     '1인당_GDP': [31728, 35003, 33591, 33147, 34200, 35500],
@@ -11,18 +11,30 @@ data = {
 }
 df = pd.DataFrame(data)
 
-# 타이틀
 st.title("📊 경제 지표 시각화 (2020–2025)")
 
-# 버튼 생성
-show_all = st.checkbox("📌 세 지표를 한 그래프로 비교하기")
+show_all = st.checkbox("🔄 3개 그래프를 하나로 통합해서 보기")
 
-if show_all:
-    st.subheader("🔄 통합 그래프 (1인당 GDP + CPI + 소비율)")
+if not show_all:
+    st.markdown("### 📌 개별 그래프 보기 (나란히)")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("**🔵 1인당 GDP**")
+        st.line_chart(df.set_index('연도')['1인당_GDP'])
+
+    with col2:
+        st.markdown("**🔴 CPI 상승률**")
+        st.line_chart(df.set_index('연도')['CPI'])
+
+    with col3:
+        st.markdown("**🟢 소비율**")
+        st.line_chart(df.set_index('연도')['소비율'])
+
+else:
+    st.markdown("### 📊 통합 비교 그래프")
     fig, ax1 = plt.subplots(figsize=(10,6))
-
     ax1.plot(df['연도'], df['1인당_GDP'], 'o-', color='blue', label='1인당 GDP (USD)')
-    ax1.set_ylabel('GDP (USD)', color='blue')
+    ax1.set_ylabel('1인당 GDP (USD)', color='blue')
     ax1.tick_params(axis='y', labelcolor='blue')
 
     ax2 = ax1.twinx()
@@ -37,22 +49,7 @@ if show_all:
     ax3.tick_params(axis='y', labelcolor='green')
 
     lines = ax1.get_lines() + ax2.get_lines() + ax3.get_lines()
-    labels = [l.get_label() for l in lines]
+    labels = [line.get_label() for line in lines]
     ax1.legend(lines, labels, loc='upper left')
 
-    plt.title('종합 경제 지표 비교')
-    plt.grid(True)
     st.pyplot(fig)
-
-else:
-    st.subheader("📈 개별 그래프 보기")
-
-    st.markdown("### 🔵 1인당 GDP")
-    st.line_chart(df.set_index('연도')['1인당_GDP'])
-
-    st.markdown("### 🔴 소비자물가 상승률")
-    st.line_chart(df.set_index('연도')['CPI'])
-
-    st.markdown("### 🟢 소비율")
-    st.line_chart(df.set_index('연도')['소비율'])
-
