@@ -16,7 +16,7 @@ st.title("📊 경제 지표 시각화 (2020–2025)")
 show_all = st.checkbox("🔄 3개 그래프를 하나로 통합해서 보기")
 
 if not show_all:
-    st.markdown("### 📌 개별 그래프 보기 (나란히)")
+    st.markdown("### 📌 개별 그래프")
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("**🔵 1인당 GDP**")
