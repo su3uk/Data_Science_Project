@@ -51,6 +51,33 @@ st.sidebar.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* 선택된 라디오 버튼 스타일 */
+[data-testid="stSidebar"] .stRadio > div > label {
+    background-color: #f0f2f6;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #d0d4dc;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* 마우스 호버 시 */
+[data-testid="stSidebar"] .stRadio > div > label:hover {
+    background-color: #e4e8f0;
+}
+
+/* 선택된 항목 강조 */
+[data-testid="stSidebar"] .stRadio > div > label[data-selected="true"] {
+    background-color: #1f77b4;
+    color: white;
+    font-weight: 600;
+    border: 1px solid #1f77b4;
+}
+</style>
+""", unsafe_allow_html=True)
+
 menu = st.sidebar.radio(
     "📂 메뉴",
     [
@@ -108,6 +135,7 @@ if menu == "폭염과 온열질환 분석 대시보드":
         st.markdown("### 🌡️ 온열질환자 수 변화")
         st.line_chart(df.set_index("연도")[['온열환자수']])
 
+elif menu == "폭염과 온열질환의 상관 관계":
     st.markdown("## 🔍 폭염과 온열질환의 상관 관계")
     fig, ax = plt.subplots(figsize=(7, 5))
     sns.regplot(x='폭염일수', y='온열환자수', data=df, ax=ax, ci=None, scatter_kws={"s": 70})
