@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib
 
 # 한글 폰트 설정 (한글 깨짐 방지)
-matplotlib.rcParams['font.family'] = 'Malgun Gothic'
+matplotlib.rcParams['font.family'] = 'NanumGothic'
 matplotlib.rcParams['axes.unicode_minus'] = False
 
 # 페이지 설정
@@ -17,7 +17,7 @@ st.set_page_config(page_title="폭염 분석 대시보드", layout="wide")
 # 📌 사이드바
 # ------------------------------
 st.sidebar.title("☀️ Heat Dashboard")
-st.sidebar.markdown("**User:** 주현욱")
+st.sidebar.markdown("**User:** 김정운, 주현욱, 송준하")
 st.sidebar.markdown("Version: `1.0.0`")
 st.sidebar.markdown("---")
 menu = st.sidebar.radio("📂 메뉴", ["Dashboard", "Data View", "Model Analysis", "Settings"])
