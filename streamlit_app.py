@@ -22,12 +22,25 @@ st.sidebar.title("☀️ Heat Dashboard")
 st.sidebar.markdown("**User:** 김정운, 주현욱, 송준하")
 st.sidebar.markdown("Version: `1.0.0`")
 st.sidebar.markdown("---")
-menu = st.sidebar.radio("📂 메뉴", [
-    "폭염과 온열질환 분석 대시보드",
-    "폭염과 온열질환의 상관 관계",
-    "온열질환 예방 대응 방안",
-    "전체 보기"
-], index=0, key="menu")
+st.sidebar.markdown("""
+<style>
+    section[data-testid="stSidebar"] .st-radio > div {
+        gap: 0.75rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+menu = st.sidebar.radio(
+    "📂 메뉴",
+    [
+        "폭염과 온열질환 분석 대시보드",
+        "폭염과 온열질환의 상관 관계",
+        "온열질환 예방 대응 방안",
+        "전체 보기"
+    ],
+    index=0,
+    key="menu"
+)
 
 # ------------------------------
 # 📊 데이터 로딩
@@ -74,7 +87,6 @@ if menu == "폭염과 온열질환 분석 대시보드":
         st.markdown("### 🌡️ 온열질환자 수 변화")
         st.line_chart(df.set_index("연도")[['온열환자수']])
 
-elif menu == "폭염과 온열질환의 상관 관계":
     st.markdown("## 🔍 폭염과 온열질환의 상관 관계")
     fig, ax = plt.subplots(figsize=(7, 5))
     sns.regplot(x='폭염일수', y='온열환자수', data=df, ax=ax, ci=None, scatter_kws={"s": 70})
@@ -147,3 +159,4 @@ elif menu == "전체 보기":
         ---
         🔄 **지속적인 모니터링과 지역 맞춤형 정책이 핵심입니다!**
         """)
+    ")
