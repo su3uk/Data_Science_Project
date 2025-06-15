@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib
 
 # 한글 폰트 설정 (한글 깨짐 방지)
-font_path = './assets/NanumGothic.ttf'
+font_path = './NanumGothic.ttf'
 font_prop = fm.FontProperties(fname=font_path)
 plt.rcParams['font.family'] = font_prop.get_name()
 plt.rcParams['axes.unicode_minus'] = False
