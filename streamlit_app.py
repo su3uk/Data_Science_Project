@@ -23,15 +23,24 @@ st.sidebar.markdown("**User:** 김정운, 주현욱, 송준하")
 st.sidebar.markdown("Version: `1.0.0`")
 st.sidebar.markdown("---")
 
-# ✅ 스타일: 사이드바 메뉴 간격 넓히기
+# ✅ 스타일: 사이드바 라디오 버튼 간격 조정 (확실하게 적용)
 st.markdown(
     """
     <style>
-        div[data-baseweb=\"radio\"] > div {
-            row-gap: 0.75rem;
-        }
+    [data-testid=\"stSidebar\"] .stRadio > div {
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.75rem;
+    }
     </style>
     """,
+    unsafe_allow_html=True
+)
+
+# ✅ 스타일: 사이드바 메뉴 간격 넓히기
+st.markdown(
+    """
+        """,
     unsafe_allow_html=True
 )
 st.sidebar.markdown("""
@@ -99,7 +108,6 @@ if menu == "폭염과 온열질환 분석 대시보드":
         st.markdown("### 🌡️ 온열질환자 수 변화")
         st.line_chart(df.set_index("연도")[['온열환자수']])
 
-elif menu == "폭염과 온열질환의 상관 관계":
     st.markdown("## 🔍 폭염과 온열질환의 상관 관계")
     fig, ax = plt.subplots(figsize=(7, 5))
     sns.regplot(x='폭염일수', y='온열환자수', data=df, ax=ax, ci=None, scatter_kws={"s": 70})
