@@ -1,14 +1,17 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import numpy as np
 import matplotlib
 
 # 한글 폰트 설정 (한글 깨짐 방지)
-matplotlib.rcParams['font.family'] = 'NanumGothic'
-matplotlib.rcParams['axes.unicode_minus'] = False
+font_path = './assets/NanumGothic.ttf'
+font_prop = fm.FontProperties(fname=font_path)
+plt.rcParams['font.family'] = font_prop.get_name()
+plt.rcParams['axes.unicode_minus'] = False
 
 # 페이지 설정
 st.set_page_config(page_title="폭염 분석 대시보드", layout="wide")
