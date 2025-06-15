@@ -22,7 +22,7 @@ st.sidebar.title("☀️ Heat Dashboard")
 st.sidebar.markdown("**User:** 김정운, 주현욱, 송준하")
 st.sidebar.markdown("Version: `1.0.0`")
 st.sidebar.markdown("---")
-menu = st.sidebar.radio("📂 메뉴", ["Dashboard", "Data View", "Model Analysis", "Settings"])
+menu = st.sidebar.radio("📂 메뉴", ["폭염과 온열질환 분석 대시보드", "폭염과 온열질환의 상관 관계", "온열질환 예방 대응 방안", "전체 보기"])
 
 # ------------------------------
 # 📊 데이터 로딩
@@ -47,7 +47,7 @@ r2 = model.score(X, y)
 # ------------------------------
 # 🎯 메뉴 기반 동작 분기
 # ------------------------------
-if menu == "Dashboard":
+if menu == "폭염과 온열질환 분석 대시보드":
     st.title("📊 폭염과 온열질환 분석 대시보드")
 
     col1, col2, col3, col4 = st.columns(4)
@@ -94,16 +94,82 @@ if menu == "Dashboard":
         🔄 **지속적인 모니터링과 지역 맞춤형 정책이 핵심입니다!**
         """)
 
-elif menu == "Data View":
+elif menu == "폭염과 온열질환의 상관 관계":
+    st.markdown("## 🔍 폭염과 온열질환의 상관 관계")
+    fig, ax = plt.subplots(figsize=(7, 5))
+    sns.regplot(x='폭염일수', y='온열환자수', data=df, ax=ax, ci=None, scatter_kws={"s": 70})
+    ax.set_xlabel("폭염일수", fontproperties=font_prop)
+    ax.set_ylabel("온열환자수", fontproperties=font_prop)
+    st.pyplot(fig)
     st.title("📄 데이터 테이블 보기")
     st.dataframe(df)
 
-elif menu == "Model Analysis":
+elif menu == "온열질환 예방 대응 방안":
+    st.markdown("## 💡 온열질환 예방 대응 방안")
+    with st.container():
+        st.markdown("""
+        ### ✅ 주요 대응 전략
+
+        | 구분 | 내용 |
+        |------|------|
+        | 🔔 **경보 시스템** | 폭염 특보 시 대국민 긴급 문자 자동 발송 시스템 구축 |
+        | 🧓 **취약계층 보호** | 독거노인, 노숙인 등 폭염 취약계층 대상 냉방쉼터 운영 및 이동형 쉼터 배치 |
+        | 🚑 **응급 대응** | 온열질환자 다발 지역에 응급의료팀 상시 대기 및 119 출동 강화 |
+        | 📊 **데이터 기반 예측** | 과거 폭염일수-환자수 데이터 기반 선제 대응 정책 수립 |
+        | 🏫 **교육 및 홍보** | 학교·직장 대상 폭염 행동 요령 캠페인 시행 및 대국민 매뉴얼 보급 |
+
+        ---
+        🔄 **지속적인 모니터링과 지역 맞춤형 정책이 핵심입니다!**
+        """)
     st.title("📈 회귀 모델 상세 분석")
     st.markdown(f"**회귀식:** y = {coef:.2f}x + {intercept:.2f}")
     st.markdown(f"**설명력 (R²):** {r2:.4f}")
     st.line_chart(df.set_index("연도"))
 
-elif menu == "Settings":
+elif menu == "전체 보기":
+    st.title("📊 폭염과 온열질환 분석 대시보드")
+
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric(label="📆 평균 폭염일수", value=f"{df['폭염일수'].mean():.1f}일", delta="+3.2일")
+    with col2:
+        st.metric(label="🧑 온열질환자 평균", value=f"{df['온열환자수'].mean():,.0f}명", delta="+2.4%")
+    with col3:
+        st.metric(label="📊 상관계수 (R²)", value=f"{r2:.2f}", delta="양의 상관")
+    with col4:
+        st.metric(label="📈 증가량 예측", value=f"+{coef:.0f}명/일", delta=f"y = {coef:.0f}x + {intercept:.0f}")
+
+    st.markdown("## 📈 연도별 추이 분석")
+    col5, col6 = st.columns(2)
+    with col5:
+        st.markdown("### 🔥 폭염일수 변화")
+        st.line_chart(df.set_index("연도")[['폭염일수']])
+    with col6:
+        st.markdown("### 🌡️ 온열질환자 수 변화")
+        st.line_chart(df.set_index("연도")[['온열환자수']])
+
+    st.markdown("## 🔍 폭염과 온열질환의 상관 관계")
+    fig, ax = plt.subplots(figsize=(7, 5))
+    sns.regplot(x='폭염일수', y='온열환자수', data=df, ax=ax, ci=None, scatter_kws={"s": 70})
+    ax.set_xlabel("폭염일수", fontproperties=font_prop)
+    ax.set_ylabel("온열환자수", fontproperties=font_prop)
+    st.pyplot(fig)
+
+    st.markdown("## 💡 온열질환 예방 대응 방안")
+    with st.container():
+        st.markdown("""
+        ### ✅ 주요 대응 전략
+
+        | 구분 | 내용 |
+        |------|------|
+        | 🔔 **경보 시스템** | 폭염 특보 시 대국민 긴급 문자 자동 발송 시스템 구축 |
+        | 🧓 **취약계층 보호** | 독거노인, 노숙인 등 폭염 취약계층 대상 냉방쉼터 운영 및 이동형 쉼터 배치 |
+        | 🚑 **응급 대응** | 온열질환자 다발 지역에 응급의료팀 상시 대기 및 119 출동 강화 |
+        | 📊 **데이터 기반 예측** | 과거 폭염일수-환자수 데이터 기반 선제 대응 정책 수립 |
+        | 🏫 **교육 및 홍보** | 학교·직장 대상 폭염 행동 요령 캠페인 시행 및 대국민 매뉴얼 보급 |
+
+        ---
+        🔄 **지속적인 모니터링과 지역 맞춤형 정책이 핵심입니다!**
+        """)
     st.title("⚙️ 설정")
     st.info("현재는 설정 가능한 항목이 없습니다. 추후 업데이트 예정입니다.")
