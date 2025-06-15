@@ -7,10 +7,9 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 import matplotlib
 
-# 한글 폰트 설정 (한글 깨짐 방지)
+# 한글 폰트 설정 (NanumGothic.ttf 포함 직접 지정)
 font_path = './NanumGothic.ttf'
 font_prop = fm.FontProperties(fname=font_path)
-plt.rcParams['font.family'] = font_prop.get_name()
 plt.rcParams['axes.unicode_minus'] = False
 
 # 페이지 설정
@@ -73,8 +72,8 @@ if menu == "Dashboard":
     st.markdown("## 🔍 폭염과 온열질환의 상관 관계")
     fig, ax = plt.subplots(figsize=(7, 5))
     sns.regplot(x='폭염일수', y='온열환자수', data=df, ax=ax, ci=None, scatter_kws={"s": 70})
-    ax.set_xlabel("폭염일수")
-    ax.set_ylabel("온열환자수")
+    ax.set_xlabel("폭염일수", fontproperties=font_prop)
+    ax.set_ylabel("온열환자수", fontproperties=font_prop)
     st.pyplot(fig)
 
     st.markdown("## 💡 온열질환 예방 대응 방안")
