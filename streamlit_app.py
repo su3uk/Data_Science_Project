@@ -37,8 +37,8 @@ ax2.set_ylabel('인구 10만명당 환자 수', color='red', fontproperties=font
 ax2.tick_params(axis='y', labelcolor='red')
 
 # 타이틀 및 스타일
-fig.suptitle("연령대별 온열질환자 수 및 인구 10만명당 환자 수", fontsize=14, fontproperties=font_prop)
-fig.tight_layout()
+fig_age.suptitle("연령대별 온열질환자 수 및 인구 10만명당 환자 수", fontsize=14, fontproperties=font_prop)
+fig_age.tight_layout()
 
 # 페이지 설정
 st.set_page_config(page_title="폭염 분석 대시보드", layout="wide")
