@@ -9,7 +9,7 @@ import matplotlib
 import io
 from PIL import Image
 
-map_img = Image.open("./고령인구지도.png")
+map_img = Image.open("./    .png")
 bar_img = Image.open("./연령대별온열질환자.png")
 
 # 한글 폰트 설정 (NanumGothic.ttf 포함 직접 지정)
@@ -161,14 +161,14 @@ elif menu == "온열질환 예방 대응 방안":
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("### 🗺️ 지역별 고령 인구 비율")
-        st.image(map_img, caption="전국 시도별 고령 인구 비율 (2024)", use_column_width=True)
+        st.image(map_img, caption="전국 시도별 고령 인구 비율 (2024)", use_container_width=True)
 
     with col2:
         st.markdown("### 📊 연령대별 온열질환자 수")
-        st.image(bar_img, caption="연령별 온열질환자 수 및 인구 10만명당 환자수", use_column_width=True)
+        st.image(bar_img, caption="연령별 온열질환자 수 및 인구 10만명당 환자수", use_container_width=True)
 
     st.markdown("### 🔍 고령 인구 비율 vs 온열환자 수 분석")
-    st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계", use_column_width=True)
+    st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계", use_container_width=True)
 
     st.markdown("""
     ### 📌 종합 분석
