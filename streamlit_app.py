@@ -268,9 +268,9 @@ elif menu == "전체 보기":
         st.pyplot(fig_age)
 
     st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
-left, center, right = st.columns([1, 2, 1])
-with center:
-    st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
+    left, center, right = st.columns([1, 2, 1])
+    with center:
+        st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
 
     # 결론 및 정책 요약
     st.markdown("""
