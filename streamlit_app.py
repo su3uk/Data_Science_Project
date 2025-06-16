@@ -190,7 +190,7 @@ elif menu == "온열질환 예방 대응 방안":
         st.pyplot(fig_age)
 
     st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
-    left, center, right = st.columns([1, 1, 1])
+    left, center, right = st.columns([1, 2, 1])
     with center:
         st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
 
@@ -270,7 +270,7 @@ elif menu == "전체 보기":
         st.pyplot(fig_age)
 
     st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
-    left, center, right = st.columns([1, 1, 1])
+    left, center, right = st.columns([1, 2, 1])
     with center:
         st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
 
