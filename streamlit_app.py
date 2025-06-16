@@ -235,22 +235,50 @@ elif menu == "전체 보기":
     st.pyplot(fig)
 
     st.markdown("## 💡 온열질환 예방 대응 방안")
-    with st.container():
-        st.markdown("### 📊 고령 인구 비율과 온열환자 수 비교")
-        st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
 
+    # 지도 + 연령대 그래프 나란히 표시
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("#### 🗺️ 지역별 고령 인구 비율")
+        st.image(map_img, caption="2024년 전국 고령 인구 비율", use_container_width=True)
+    with col2:
+        st.markdown("#### 📊 연령대별 온열질환자 수")
+        st.image(bar_img, caption="연령별 온열질환자 수 및 인구 10만명당 환자수", use_container_width=True)
+
+    st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
+    st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계", use_container_width=True)
+
+    # 결론 및 정책 요약
+    st.markdown("""
+    <br>
+    <div style='font-size:17px; line-height:1.6'>
+    🔍 <b>결론 요약</b><br>
+    - 고령 인구 비율이 높은 지역일수록 온열질환자 수가 많습니다.<br>
+    - 연령대별 통계에서도 70대 이상 고령층이 특히 위험합니다.<br>
+    - 폭염 대응 정책의 핵심은 <b style='color:#e74c3c'>고령층 보호</b>입니다.
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""---""")
+    st.markdown("#### ✅ 정책 제안")
+
+    col1, col2 = st.columns(2)
+    with col1:
         st.markdown("""
-        ### 🔍 분석 결과
-
-        - 전국 17개 시도 중 **고령 인구 비율이 가장 높은 지역**은 다음과 같습니다:
-            - **전라남도** (27.2%)
-            - **경상북도** (26.0%)
-            - **강원도** (25.4%)
-
-        - 해당 지역들은 동시에 **평균 온열질환자 수 상위 3개 지역**과도 일치합니다.
-
-        📌 **결론**:
-        > 고령 인구 비율이 높은 지역에서 온열질환자 수 또한 높은 경향이 있음을 확인할 수 있었습니다.
-        >
-        > 이는 곧 **고령층(취약계층)** 이 폭염에 더 취약하다는 점을 시사하며, **무더위 쉼터 설치 및 운영 강화** 등 예방 대책이 절실하다는 결론을 도출할 수 있습니다.
+        - 🧓 **고령층 보호**  
+          무더위 쉼터 확대, 고령자 대상 문자 발송 강화
+          
+        - 📊 **데이터 기반 대응**  
+          고령 인구·기온·환자 데이터를 활용한 예측 시스템 구축
         """)
+    with col2:
+        st.markdown("""
+        - 🏥 **응급 대응 체계**  
+          폭염 시 119 연결 강화, 마을 단위 응급점검
+
+        - 📣 **홍보 및 교육**  
+          마을 방송·전단지·대중교통 캠페인 활용
+        """)
+
+    st.markdown("""---""")
+    st.success("🌡️ 고령자 중심의 폭염 대응이 국민 건강을 지키는 열쇠입니다.")
