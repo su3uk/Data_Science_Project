@@ -9,7 +9,7 @@ import matplotlib
 import io
 from PIL import Image
 
-map_img = Image.open("./    .png")
+map_img = Image.open("./고령인구지도.png")
 bar_img = Image.open("./연령대별온열질환자.png")
 
 # 한글 폰트 설정 (NanumGothic.ttf 포함 직접 지정)
