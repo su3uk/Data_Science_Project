@@ -18,6 +18,28 @@ font_prop = fm.FontProperties(fname=font_path)
 plt.rc('font', family=font_prop.get_name())
 plt.rcParams['axes.unicode_minus'] = False
 
+# 데이터 입력
+연령대 = ['0~9세', '10~19세', '20~29세', '30~39세', '40~49세', '50~59세', '60~69세', '70~79세', '80세 이상']
+환자수 = [12, 103, 372, 478, 538, 716, 678, 434, 373]
+인구10만명당 = [0.4, 2.2, 6.2, 7.8, 6.9, 9.2, 8.7, 10.9, 15.4]
+
+# 그래프 그리기
+fig, ax1 = plt.subplots(figsize=(8, 5))
+bar = ax1.bar(연령대, 환자수, color='gray', label='온열질환자 수')
+ax1.set_ylabel('온열질환자 수 (명)', fontproperties=font_prop)
+ax1.set_xlabel('연령대', fontproperties=font_prop)
+ax1.tick_params(axis='y')
+
+# 이중축
+ax2 = ax1.twinx()
+line = ax2.plot(연령대, 인구10만명당, color='red', marker='o', label='인구 10만명당 환자 수')
+ax2.set_ylabel('인구 10만명당 환자 수', color='red', fontproperties=font_prop)
+ax2.tick_params(axis='y', labelcolor='red')
+
+# 타이틀 및 스타일
+fig.suptitle("연령대별 온열질환자 수 및 인구 10만명당 환자 수", fontsize=14, fontproperties=font_prop)
+fig.tight_layout()
+
 # 페이지 설정
 st.set_page_config(page_title="폭염 분석 대시보드", layout="wide")
 
@@ -243,7 +265,7 @@ elif menu == "전체 보기":
         st.image(map_img, caption="2024년 전국 고령 인구 비율", use_container_width=True)
     with col2:
         st.markdown("#### 📊 연령대별 온열질환자 수")
-        st.image(bar_img, caption="연령별 온열질환자 수 및 인구 10만명당 환자수", use_container_width=True)
+        st.pyplot(fig)
 
     st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
     st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계", use_container_width=True)
