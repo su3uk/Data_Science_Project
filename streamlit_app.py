@@ -6,6 +6,7 @@ import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import numpy as np
 import matplotlib
+import io
 
 # 한글 폰트 설정 (NanumGothic.ttf 포함 직접 지정)
 font_path = './NanumGothic.ttf'
@@ -16,45 +17,74 @@ plt.rcParams['axes.unicode_minus'] = False
 st.set_page_config(page_title="폭염 분석 대시보드", layout="wide")
 
 # ------------------------------
-# 📌 사이드바
+# 파이어 데이터 로드
+# ------------------------------
+@st.cache_data
+def load_data():
+    return pd.DataFrame({
+        '연도': [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+        '폭염일수': [8, 24, 13, 35, 15, 2, 5, 8, 11, 10],
+        '온열환자수': [13434, 15322, 13583, 25047, 17509, 11333, 10919, 13713, 15543, 17356]
+    })
+
+df = load_data()
+X = df[['폭염일수']]
+y = df['온열환자수']
+model = LinearRegression()
+model.fit(X, y)
+coef = model.coef_[0]
+intercept = model.intercept_
+r2 = model.score(X, y)
+
+# 고령 인구 비율 수동 입력
+senior_ratio = {
+    "강원도": 25.4,
+    "경상북도": 26.0,
+    "전라남도": 27.2
+}
+
+@st.cache_data
+def load_patient_data():
+    df = pd.read_excel("연도별 온열환자 수.xlsx", sheet_name='Sheet1', header=1)
+    df = df.rename(columns={"시·도명": "시도"})
+    df = df[df["시도"].isin(["강원도", "경상북도", "전라남도"])].copy()
+    year_cols = [col for col in df.columns if isinstance(col, int)]
+    df["평균 온열환자 수"] = df[year_cols].mean(axis=1).astype(int)
+    df["고령 인구 비율"] = df["시도"].map(senior_ratio)
+    return df
+
+df_region = load_patient_data()
+
+fig, ax1 = plt.subplots(figsize=(8, 5))
+ax1.bar(df_region["시도"], df_region["평균 온열환자 수"], color='salmon', label="평균 온열환자 수")
+ax1.set_ylabel("평균 온열환자 수", fontsize=11)
+ax2 = ax1.twinx()
+ax2.plot(df_region["시도"], df_region["고령 인구 비율"], color='darkblue', marker='o', label="고령 인구 비율 (%)")
+ax2.set_ylabel("고령 인구 비율 (%)", fontsize=11)
+fig.suptitle("지역별 평균 온열환자 수 vs 고령 인구 비율", fontsize=14)
+fig.legend(loc="upper left", bbox_to_anchor=(0.1, 0.95))
+plt.tight_layout()
+
+img_buffer = io.BytesIO()
+fig.savefig(img_buffer, format='png')
+img_buffer.seek(0)
+
+# ------------------------------
+# 파이스트 메뉴
 # ------------------------------
 st.sidebar.title("☀️ Heat Dashboard")
 st.sidebar.markdown("**User:** 김정운, 주현욱, 송준하")
 st.sidebar.markdown("Version: `1.0.0`")
 st.sidebar.markdown("---")
 
-# ✅ 스타일: 사이드바 라디오 버튼 간격 조정 (확실하게 적용)
-st.markdown(
-    """
-    <style>
-    [data-testid=\"stSidebar\"] .stRadio > div {
-        display: flex;
-        flex-direction: column;
-        row-gap: 0.75rem;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# ✅ 스타일: 사이드바 메뉴 간격 넓히기
-st.markdown(
-    """
-        """,
-    unsafe_allow_html=True
-)
-st.sidebar.markdown("""
-<style>
-    section[data-testid="stSidebar"] .st-radio > div {
-        gap: 0.75rem;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 st.markdown("""
 <style>
-/* 선택된 라디오 버튼 스타일 */
-[data-testid="stSidebar"] .stRadio > div > label {
+[data-testid=\"stSidebar\"] .stRadio > div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.75rem;
+}
+[data-testid=\"stSidebar\"] .stRadio > div > label {
     background-color: #f0f2f6;
     padding: 0.6rem 1rem;
     border-radius: 8px;
@@ -62,14 +92,10 @@ st.markdown("""
     transition: 0.3s;
     cursor: pointer;
 }
-
-/* 마우스 호버 시 */
-[data-testid="stSidebar"] .stRadio > div > label:hover {
+[data-testid=\"stSidebar\"] .stRadio > div > label:hover {
     background-color: #e4e8f0;
 }
-
-/* 선택된 항목 강조 */
-[data-testid="stSidebar"] .stRadio > div > label[data-selected="true"] {
+[data-testid=\"stSidebar\"] .stRadio > div > label[data-selected=\"true\"] {
     background-color: #1f77b4;
     color: white;
     font-weight: 600;
@@ -91,31 +117,10 @@ menu = st.sidebar.radio(
 )
 
 # ------------------------------
-# 📊 데이터 로딩
-# ------------------------------
-@st.cache_data
-def load_data():
-    return pd.DataFrame({
-        '연도': [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-        '폭염일수': [8, 24, 13, 35, 15, 2, 5, 8, 11, 10],
-        '온열환자수': [13434, 15322, 13583, 25047, 17509, 11333, 10919, 13713, 15543, 17356]
-    })
-
-df = load_data()
-X = df[['폭염일수']]
-y = df['온열환자수']
-model = LinearRegression()
-model.fit(X, y)
-coef = model.coef_[0]
-intercept = model.intercept_
-r2 = model.score(X, y)
-
-# ------------------------------
-# 🎯 메뉴 기반 동작 분기
+# 메뉴 기반 동작
 # ------------------------------
 if menu == "폭염과 온열질환 분석 대시보드":
     st.title("📊 폭염과 온열질환 분석 대시보드")
-
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric(label="📆 평균 폭염일수", value=f"{df['폭염일수'].mean():.1f}일", delta="+3.2일")
@@ -146,26 +151,29 @@ elif menu == "폭염과 온열질환의 상관 관계":
 
 elif menu == "온열질환 예방 대응 방안":
     st.markdown("## 💡 온열질환 예방 대응 방안")
+
     with st.container():
+        st.markdown("### 📊 고령 인구 비율과 온열환자 수 비교")
+        st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
+
         st.markdown("""
-        ### ✅ 주요 대응 전략
+        ### 🔍 분석 결과
 
-        | 구분 | 내용 |
-        |------|------|
-        | 🔔 **경보 시스템** | 폭염 특보 시 대국민 긴급 문자 자동 발송 시스템 구축 |
-        | 🧓 **취약계층 보호** | 독거노인, 노숙인 등 폭염 취약계층 대상 냉방쉼터 운영 및 이동형 쉼터 배치 |
-        | 🚑 **응급 대응** | 온열질환자 다발 지역에 응급의료팀 상시 대기 및 119 출동 강화 |
-        | 📊 **데이터 기반 예측** | 과거 폭염일수-환자수 데이터 기반 선제 대응 정책 수립 |
-        | 🏫 **교육 및 홍보** | 학교·직장 대상 폭염 행동 요령 캠페인 시행 및 대국민 매뉴얼 보급 |
+        - 전국 17개 시도 중 **고령 인구 비율이 가장 높은 지역**은 다음과 같습니다:
+            - **전라남도** (27.2%)
+            - **경상북도** (26.0%)
+            - **강원도** (25.4%)
 
-        ---
-        🔄 **지속적인 모니터링과 지역 맞춤형 정책이 핵심입니다!**
+        - 해당 지역들은 동시에 **평균 온열질환자 수 상위 3개 지역**과도 일치합니다.
+
+        📌 **결론**:
+        > 고령 인구 비율이 높은 지역에서 온열질환자 수 또한 높은 경향이 있음을 확인할 수 있었습니다.
+        >
+        > 이는 곧 **고령층(취약계층)** 이 폭염에 더 취약하다는 점을 시사하며, **무더위 쉼터 설치 및 운영 강화** 등 예방 대책이 절실하다는 결론을 도출할 수 있습니다.
         """)
-    
 
 elif menu == "전체 보기":
     st.title("📊 폭염과 온열질환 분석 대시보드")
-
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric(label="📆 평균 폭염일수", value=f"{df['폭염일수'].mean():.1f}일", delta="+3.2일")
@@ -189,22 +197,26 @@ elif menu == "전체 보기":
     fig, ax = plt.subplots(figsize=(7, 5))
     sns.regplot(x='폭염일수', y='온열환자수', data=df, ax=ax, ci=None, scatter_kws={"s": 70})
     ax.set_xlabel("폭염일수", fontproperties=font_prop)
-    ax.set_ylabel("온열환자수", fontproperties=font_prop)
+    ax.set_ylabel("온열질환수", fontproperties=font_prop)
     st.pyplot(fig)
 
     st.markdown("## 💡 온열질환 예방 대응 방안")
     with st.container():
+        st.markdown("### 📊 고령 인구 비율과 온열환자 수 비교")
+        st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
+
         st.markdown("""
-        ### ✅ 주요 대응 전략
+        ### 🔍 분석 결과
 
-        | 구분 | 내용 |
-        |------|------|
-        | 🔔 **경보 시스템** | 폭염 특보 시 대국민 긴급 문자 자동 발송 시스템 구축 |
-        | 🧓 **취약계층 보호** | 독거노인, 노숙인 등 폭염 취약계층 대상 냉방쉼터 운영 및 이동형 쉼터 배치 |
-        | 🚑 **응급 대응** | 온열질환자 다발 지역에 응급의료팀 상시 대기 및 119 출동 강화 |
-        | 📊 **데이터 기반 예측** | 과거 폭염일수-환자수 데이터 기반 선제 대응 정책 수립 |
-        | 🏫 **교육 및 홍보** | 학교·직장 대상 폭염 행동 요령 캠페인 시행 및 대국민 매뉴얼 보급 |
+        - 전국 17개 시도 중 **고령 인구 비율이 가장 높은 지역**은 다음과 같습니다:
+            - **전라남도** (27.2%)
+            - **경상북도** (26.0%)
+            - **강원도** (25.4%)
 
-        ---
-        🔄 **지속적인 모니터링과 지역 맞춤형 정책이 핵심입니다!**
+        - 해당 지역들은 동시에 **평균 온열질환자 수 상위 3개 지역**과도 일치합니다.
+
+        📌 **결론**:
+        > 고령 인구 비율이 높은 지역에서 온열질환자 수 또한 높은 경향이 있음을 확인할 수 있었습니다.
+        >
+        > 이는 곧 **고령층(취약계층)** 이 폭염에 더 취약하다는 점을 시사하며, **무더위 쉼터 설치 및 운영 강화** 등 예방 대책이 절실하다는 결론을 도출할 수 있습니다.
         """)
