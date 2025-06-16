@@ -45,7 +45,7 @@ senior_ratio = {
 
 @st.cache_data
 def load_patient_data():
-    df = pd.read_excel("연도별 온열환자 수.xlsx", sheet_name='Sheet1', header=1)
+    df = pd.read_excel("./연도별 온열환자 수.xlsx", sheet_name='Sheet1', header=1)
     df = df.rename(columns={"시·도명": "시도"})
     df = df[df["시도"].isin(["강원도", "경상북도", "전라남도"])].copy()
     year_cols = [col for col in df.columns if isinstance(col, int)]
