@@ -24,7 +24,7 @@ plt.rcParams['axes.unicode_minus'] = False
 인구10만명당 = [0.4, 2.2, 6.2, 7.8, 6.9, 9.2, 8.7, 10.9, 15.4]
 
 # 그래프 그리기
-fig_age, ax1 = plt.subplots(figsize=(6, 4))
+fig_age, ax1 = plt.subplots(figsize=(5, 3))
 bar = ax1.bar(연령대, 환자수, color='gray', label='온열질환자 수')
 ax1.set_ylabel('온열질환자 수 (명)', fontproperties=font_prop)
 ax1.set_xlabel('연령대', fontproperties=font_prop)
