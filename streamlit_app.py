@@ -101,9 +101,9 @@ img_buffer.seek(0)
 # 파이스트 메뉴
 # ------------------------------
 st.sidebar.title("☀️ Heat Dashboard")
-st.sidebar.markdown("**Team:** 김주송")
-st.sidebar.markdown("**User:** 김정운, 주현욱, 송준하")
-st.sidebar.markdown("**Topic:** 폭염일수 증가가 온열질환자 수에 미치는 영향 분석 및 대응 방안 제시")
+st.sidebar.markdown("**Team:** `김주송`")
+st.sidebar.markdown("**User:** `김정운`, `주현욱`, `송준하`")
+st.sidebar.markdown("**Topic:** `폭염일수 증가가 온열질환자 수에 미치는 영향 분석 및 대응 방안 제시`")
 st.sidebar.markdown("**Version:** `1.0.0`")
 st.sidebar.markdown("---")
 
