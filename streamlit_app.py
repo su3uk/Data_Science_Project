@@ -11,6 +11,7 @@ import io
 # 한글 폰트 설정 (NanumGothic.ttf 포함 직접 지정)
 font_path = './NanumGothic.ttf'
 font_prop = fm.FontProperties(fname=font_path)
+plt.rc('font', family=font_prop.get_name())
 plt.rcParams['axes.unicode_minus'] = False
 
 # 페이지 설정
@@ -57,12 +58,13 @@ df_region = load_patient_data()
 
 fig, ax1 = plt.subplots(figsize=(8, 5))
 ax1.bar(df_region["시도"], df_region["평균 온열환자 수"], color='salmon', label="평균 온열환자 수")
-ax1.set_ylabel("평균 온열환자 수", fontsize=11)
+ax1.set_ylabel("평균 온열환자 수", fontsize=11, fontproperties=font_prop)
+ax1.set_xticklabels(df_region["시도"], fontproperties=font_prop)
 ax2 = ax1.twinx()
 ax2.plot(df_region["시도"], df_region["고령 인구 비율"], color='darkblue', marker='o', label="고령 인구 비율 (%)")
-ax2.set_ylabel("고령 인구 비율 (%)", fontsize=11)
-fig.suptitle("지역별 평균 온열환자 수 vs 고령 인구 비율", fontsize=14)
-fig.legend(loc="upper left", bbox_to_anchor=(0.1, 0.95))
+ax2.set_ylabel("고령 인구 비율 (%)", fontsize=11, fontproperties=font_prop)
+fig.suptitle("지역별 평균 온열환자 수 vs 고령 인구 비율", fontsize=14, fontproperties=font_prop)
+fig.legend(loc="upper left", bbox_to_anchor=(0.1, 0.95), prop=font_prop)
 plt.tight_layout()
 
 img_buffer = io.BytesIO()
