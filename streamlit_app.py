@@ -82,7 +82,7 @@ def load_patient_data():
 
 df_region = load_patient_data()
 
-fig, ax1 = plt.subplots(figsize=(8, 5))
+fig, ax1 = plt.subplots(figsize=(6, 4))
 ax1.bar(df_region["시도"], df_region["평균 온열환자 수"], color='salmon', label="평균 온열환자 수")
 ax1.set_ylabel("평균 온열환자 수", fontsize=11, fontproperties=font_prop)
 ax1.set_xticklabels(df_region["시도"], fontproperties=font_prop)
