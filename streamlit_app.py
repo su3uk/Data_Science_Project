@@ -176,8 +176,10 @@ elif menu == "폭염과 온열질환의 상관 관계":
     sns.regplot(x='폭염일수', y='온열환자수', data=df, ax=ax, ci=None, scatter_kws={"s": 70})
     ax.set_xlabel("폭염일수", fontproperties=font_prop)
     ax.set_ylabel("온열환자수", fontproperties=font_prop)
-    st.pyplot(fig)
-    st.dataframe(df)
+    left, center, right = st.columns([1, 5, 1])
+    with center:
+        st.pyplot(fig)
+        st.dataframe(df)
 
 elif menu == "온열질환 예방 대응 방안":
     st.markdown("## 💡 온열질환 예방 대응 방안")
