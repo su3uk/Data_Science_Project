@@ -231,8 +231,6 @@ elif menu == "온열질환 예방 대응 방안":
         """)
 
     st.markdown("""---""")
-    st.success("🌡️ 고령자 중심의 폭염 대응이 국민 건강을 지키는 열쇠입니다.")
-
 
 elif menu == "전체 보기":
     st.title("📊 폭염과 온열질환 분석 대시보드")
@@ -313,3 +311,11 @@ elif menu == "전체 보기":
         """)
 
     st.markdown("""---""")
+
+    st.markdown("""
+<div style='text-align: right; font-size:13px; color:gray; line-height:1.4; margin-top:30px;'>
+📌 <b>출처</b><br>
+기상청 – 연도별 폭염일수 데이터 (2015~2024)<br>
+국민건강보험공단 – 연도별 전국 온열질환자 수 통계 (2015~2024)
+</div>
+""", unsafe_allow_html=True)
