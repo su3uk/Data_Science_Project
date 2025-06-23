@@ -30,6 +30,31 @@ ax1.set_ylabel('온열질환자 수 (명)', fontproperties=font_prop)
 ax1.set_xlabel('연령대', fontproperties=font_prop)
 ax1.tick_params(axis='y')
 
+# 전체 시도 그래프 (고령인구 비율 vs 온열질환자 수)
+region_all = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '강원',
+              '충북', '충남', '전북', '전남', '경북', '경남', '제주']
+환자수_all = [750, 950, 880, 620, 590, 640, 610, 430, 610, 810, 720, 760, 850, 920, 1010, 840, 700]
+고령비율_all = [15.2, 20.3, 19.8, 16.4, 17.1, 18.0, 17.5, 15.9, 17.2, 26.8, 24.5, 25.2, 26.7, 27.3, 26.0, 24.8, 20.0]
+
+df_all = pd.DataFrame({
+    "지역": region_all,
+    "온열질환자 수": 환자수_all,
+    "고령 인구 비율": 고령비율_all
+})
+
+fig_all_region, ax1_bar = plt.subplots(figsize=(10, 6))
+ax1_bar.bar(df_all["지역"], df_all["온열질환자 수"], color='salmon', label="온열질환자 수")
+ax1_bar.set_ylabel("온열질환자 수", fontproperties=font_prop)
+ax1_bar.set_xticklabels(df_all["지역"], rotation=45, fontproperties=font_prop)
+
+ax2_line = ax1_bar.twinx()
+ax2_line.plot(df_all["지역"], df_all["고령 인구 비율"], color='navy', marker='o', label="고령 인구 비율 (%)")
+ax2_line.set_ylabel("고령 인구 비율 (%)", fontproperties=font_prop)
+
+fig_all_region.suptitle("전국 고령 인구 비율과 온열질환자 수 비교", fontsize=14, fontproperties=font_prop)
+fig_all_region.legend(loc="upper left", bbox_to_anchor=(0.1, 0.95), prop=font_prop)
+fig_all_region.tight_layout()
+
 # 이중축
 ax2 = ax1.twinx()
 line = ax2.plot(연령대, 인구10만명당, color='red', marker='o', label='인구 10만명당 환자 수')
@@ -196,7 +221,7 @@ elif menu == "온열질환 예방 대응 방안":
     st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
     left, center, right = st.columns([1, 5, 1])
     with center:
-        st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
+        st.pyplot(fig_all_region)
 
     # 결론 및 정책 요약
     st.markdown("""
@@ -277,7 +302,7 @@ elif menu == "전체 보기":
     st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
     left, center, right = st.columns([1, 5, 1])
     with center:
-        st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
+        st.pyplot(fig_all_region)
 
     # 결론 및 정책 요약
     st.markdown("""
