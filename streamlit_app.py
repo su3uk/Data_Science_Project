@@ -42,24 +42,47 @@ df_all = pd.DataFrame({
     "고령 인구 비율": 고령비율_all
 })
 
-fig_all_region, ax1_bar = plt.subplots(figsize=(10, 6))
-ax1_bar.bar(df_all["지역"], df_all["온열질환자 수"], color='salmon', label="온열질환자 수")
-ax1_bar.set_ylabel("온열질환자 수", fontproperties=font_prop)
-ax1_bar.set_xticklabels(df_all["지역"], rotation=45, fontproperties=font_prop)
+# 선 그래프 (이중축) – 고령 인구 비율과 10만명당 환자 수
+df_ratio = pd.read_csv("./시도별_온열질환자_비율.csv")  # 새로 추가한 파일
+df_ratio = df_ratio.rename(columns={
+    "시·도명": "지역",
+    "환자 비율(%)": "10만명당환자수",
+    "합계": "환자수"
+})
 
-ax2_line = ax1_bar.twinx()
-ax2_line.plot(df_all["지역"], df_all["고령 인구 비율"], color='navy', marker='o', label="고령 인구 비율 (%)")
-ax2_line.set_ylabel("고령 인구 비율 (%)", fontproperties=font_prop)
+# 고령 인구 비율 추가
+senior_ratio_all = {
+    "서울특별시": 19.4,
+    "부산광역시": 23.9,
+    "대구광역시": 20.9,
+    "인천광역시": 17.7,
+    "광주광역시": 17.5,
+    "대전광역시": 18.0,
+    "울산광역시": 17.2,
+    "세종특별자치시": 11.6,
+    "경기도": 16.6,
+    "강원도": 25.4,
+    "충청북도": 21.9,
+    "충청남도": 22.3,
+    "전라북도": 25.3,
+    "전라남도": 27.2,
+    "경상북도": 26.0,
+    "경상남도": 21.8,
+    "제주특별자치도": 18.9
+}
+df_ratio["고령인구비율"] = df_ratio["지역"].map(senior_ratio_all)
 
-fig_all_region.suptitle("고령 인구 비율과 온열질환자 수 비교", fontsize=14, fontproperties=font_prop)
-fig_all_region.legend(loc="upper left", bbox_to_anchor=(0.1, 0.95), prop=font_prop)
-fig_all_region.tight_layout()
+fig_ratio, ax1 = plt.subplots(figsize=(10, 6))
+ax1.plot(df_ratio["지역"], df_ratio["10만명당환자수"], marker='o', label="10만명당 환자 수", color='darkorange')
+ax1.set_ylabel("온열질환자 수", fontproperties=font_prop)
+ax1.set_xticks(range(len(df_ratio["지역"])))
+ax1.set_xticklabels(df_ratio["지역"], rotation=45, fontproperties=font_prop)
+ax1.tick_params(axis='y', labelcolor='darkorange')
 
-# 이중축
 ax2 = ax1.twinx()
-line = ax2.plot(연령대, 인구10만명당, color='red', marker='o', label='인구 10만명당 환자 수')
-ax2.set_ylabel('인구 10만명당 환자 수', color='red', fontproperties=font_prop)
-ax2.tick_params(axis='y', labelcolor='red')
+ax2.plot(df_ratio["지역"], df_ratio["고령인구비율"], marker='o', color='navy', label="고령 인구 비율 (%)")
+ax2.set_ylabel("고령 인구 비율 (%)", fontproperties=font_prop)
+ax2.tick_params(axis='y', labelcolor='navy')
 
 # 타이틀 및 스타일
 fig_age.suptitle("연령대별 온열질환자 수 및 인구 10만명당 환자 수", fontsize=14, fontproperties=font_prop)
@@ -67,6 +90,23 @@ fig_age.tight_layout()
 
 # 페이지 설정
 st.set_page_config(page_title="폭염 분석 대시보드", layout="wide")
+
+fig_ratio, ax1 = plt.subplots(figsize=(10, 6))
+ax1.plot(df_ratio["지역"], df_ratio["10만명당환자수"], marker='o', label="10만명당 환자 수", color='darkorange')
+ax1.set_ylabel("10만명당 온열질환자 수", fontproperties=font_prop)
+ax1.set_xticks(range(len(df_ratio["지역"])))
+ax1.set_xticklabels(df_ratio["지역"], rotation=45, fontproperties=font_prop)
+ax1.tick_params(axis='y', labelcolor='darkorange')
+
+# 이중축
+ax2 = ax1.twinx()
+ax2.plot(df_ratio["지역"], df_ratio["고령인구비율"], marker='o', color='navy', label="고령 인구 비율 (%)")
+ax2.set_ylabel("고령 인구 비율 (%)", fontproperties=font_prop)
+ax2.tick_params(axis='y', labelcolor='navy')
+
+fig_ratio.suptitle("시도별 고령 인구 비율과 온열질환자 수", fontsize=14, fontproperties=font_prop)
+fig_ratio.tight_layout()
+
 
 # ------------------------------
 # 파이어 데이터 로드
@@ -221,7 +261,7 @@ elif menu == "온열질환 예방 대응 방안":
     st.markdown("#### 📈 고령 인구 비율과 온열질환자 수 비교")
     left, center, right = st.columns([1, 5, 1])
     with center:
-        st.pyplot(fig_all_region)
+        st.pyplot(fig_ratio)
 
     # 결론 및 정책 요약
     st.markdown("""
@@ -302,7 +342,7 @@ elif menu == "전체 보기":
     st.markdown("#### 📈 고령 인구 비율과 온열질환자 수 비교")
     left, center, right = st.columns([1, 5, 1])
     with center:
-        st.pyplot(fig_all_region)
+        st.pyplot(fig_ratio)
 
     # 결론 및 정책 요약
     st.markdown("""
