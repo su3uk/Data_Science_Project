@@ -153,9 +153,9 @@ if menu == "폭염과 온열질환 분석 대시보드":
     st.title("📊 폭염과 온열질환 분석 대시보드")
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric(label="📆 평균 폭염일수", value=f"{df['폭염일수'].mean():.1f}일", delta="+3.2일")
+        st.metric(label="📆 평균 폭염일수", value=f"{df['폭염일수'].mean():.1f}일")
     with col2:
-        st.metric(label="🧑 온열질환자 평균", value=f"{df['온열환자수'].mean():,.0f}명", delta="+2.4%")
+        st.metric(label="🧑 온열질환자 평균", value=f"{df['온열환자수'].mean():,.0f}명")
     with col3:
         st.metric(label="📊 상관계수 (R²)", value=f"{r2:.2f}", delta="양의 상관")
     with col4:
@@ -233,82 +233,26 @@ elif menu == "온열질환 예방 대응 방안":
     st.markdown("""---""")
 
 elif menu == "전체 보기":
-    st.title("📊 폭염과 온열질환 분석 대시보드")
-    col1, col2, col3, col4 = st.columns(4)
+    st.title("🔥 폭염 대응 데이터 요약")
+
+    st.markdown("### ☀️ 평균 현황 요약")
+    col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric(label="📆 평균 폭염일수", value=f"{df['폭염일수'].mean():.1f}일", delta="+3.2일")
+        st.metric("📆 평균 폭염일수", f"{df['폭염일수'].mean():.1f}일")
     with col2:
-        st.metric(label="🧑 온열질환자 평균", value=f"{df['온열환자수'].mean():,.0f}명", delta="+2.4%")
+        st.metric("🧑 온열질환자 평균", f"{df['온열환자수'].mean():,.0f}명")
     with col3:
-        st.metric(label="📊 상관계수 (R²)", value=f"{r2:.2f}", delta="양의 상관")
-    with col4:
-        st.metric(label="📈 증가량 예측", value=f"+{coef:.0f}명/일", delta=f"y = {coef:.0f}x + {intercept:.0f}")
+        st.metric("상관계수 R²", f"{r2:.2f}")
 
-    st.markdown("## 📈 연도별 추이 분석")
-    col5, col6 = st.columns(2)
-    with col5:
-        st.markdown("### 🔥 폭염일수 변화")
-        st.line_chart(df.set_index("연도")[['폭염일수']])
-    with col6:
-        st.markdown("### 🌡️ 온열질환자 수 변화")
-        st.line_chart(df.set_index("연도")[['온열환자수']])
-
-    st.markdown("## 🔍 폭염과 온열질환의 상관 관계")
-    fig, ax = plt.subplots(figsize=(7, 5))
-    sns.regplot(x='폭염일수', y='온열환자수', data=df, ax=ax, ci=None, scatter_kws={"s": 70})
-    ax.set_xlabel("폭염일수", fontproperties=font_prop)
-    ax.set_ylabel("온열질환수", fontproperties=font_prop)
-    left, center, right = st.columns([1, 7, 1])
-    with center:
-        st.pyplot(fig)
-
-    st.markdown("## 💡 온열질환 예방 대응 방안")
-
-    # 지도 + 연령대 그래프 나란히 표시
+    st.markdown("### 📈 관계 시각화")
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("#### 🗺️ 지역별 고령 인구 비율")
-        st.image(map_img, caption="2024년 전국 고령 인구 비율", use_container_width=True)
+        st.image(img_buffer, caption="고령 인구 vs 온열질환자 수", use_container_width=True)
     with col2:
-        st.markdown("#### 📊 연령대별 온열질환자 수")
         st.pyplot(fig_age)
 
-    st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
-    left, center, right = st.columns([1, 5, 1])
-    with center:
-        st.image(img_buffer, caption="고령 인구 비율과 온열환자 수의 상관 관계")
-
-    # 결론 및 정책 요약
-    st.markdown("""
-    <br>
-    <div style='font-size:17px; line-height:1.6'>
-    🔍 <b>결론 요약</b><br>
-    - 고령 인구 비율이 높은 지역일수록 온열질환자 수가 많습니다.<br>
-    - 연령대별 통계에서도 70대 이상 고령층이 특히 위험합니다.<br>
-    - 폭염 대응 정책의 핵심은 <b style='color:#e74c3c'>고령층 보호</b>입니다.
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("""---""")
-    st.markdown("#### 정책 제안")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("""
-        - **고령층 보호**  
-          무더위 쉼터 확대, 고령자 대상 문자 발송 강화
-          
-        - **데이터 기반 대응**  
-          고령 인구·기온·환자 데이터를 활용한 예측 시스템 구축
-        """)
-    with col2:
-        st.markdown("""
-        - **응급 대응 체계**  
-          폭염 시 119 연결 강화, 마을 단위 응급점검
-
-        - **홍보 및 교육**  
-          마을 방송·전단지·대중교통 캠페인 활용
-        """)
+    st.markdown("### 🗺️ 지역 고령 인구 비율")
+    st.image(map_img, use_container_width=True)
 
     st.markdown("""---""")
 
