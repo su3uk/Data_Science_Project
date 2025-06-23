@@ -218,11 +218,6 @@ elif menu == "온열질환 예방 대응 방안":
         st.markdown("#### 📊 연령대별 온열질환자 수")
         st.pyplot(fig_age)
 
-    st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
-    left, center, right = st.columns([1, 5, 1])
-    with center:
-        st.pyplot(fig_all_region)
-
     # 결론 및 정책 요약
     st.markdown("""
     <br>
@@ -299,10 +294,11 @@ elif menu == "전체 보기":
         st.markdown("#### 📊 연령대별 온열질환자 수")
         st.pyplot(fig_age)
 
-    st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
-    left, center, right = st.columns([1, 5, 1])
-    with center:
-        st.pyplot(fig_all_region)
+    
+    #st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
+    #left, center, right = st.columns([1, 5, 1])
+    #with center:
+    #    st.pyplot(fig_all_region)
 
     # 결론 및 정책 요약
     st.markdown("""
