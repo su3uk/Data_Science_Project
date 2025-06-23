@@ -93,7 +93,7 @@ st.set_page_config(page_title="폭염 분석 대시보드", layout="wide")
 
 fig_ratio, ax1 = plt.subplots(figsize=(10, 6))
 ax1.plot(df_ratio["지역"], df_ratio["10만명당환자수"], marker='o', label="10만명당 환자 수", color='darkorange')
-ax1.set_ylabel("10만명당 온열질환자 수", fontproperties=font_prop)
+ax1.set_ylabel("온열질환자 수", fontproperties=font_prop)
 ax1.set_xticks(range(len(df_ratio["지역"])))
 ax1.set_xticklabels(df_ratio["지역"], rotation=45, fontproperties=font_prop)
 ax1.tick_params(axis='y', labelcolor='darkorange')
