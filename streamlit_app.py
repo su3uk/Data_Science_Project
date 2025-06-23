@@ -107,6 +107,17 @@ ax2.tick_params(axis='y', labelcolor='navy')
 fig_ratio.suptitle("시도별 고령 인구 비율과 온열질환자 수", fontsize=14, fontproperties=font_prop)
 fig_ratio.tight_layout()
 
+def create_age_figure():
+    fig, ax1 = plt.subplots(figsize=(8, 5))
+    ax1.bar(연령대, 환자수, color='gray')
+    ax1.set_ylabel('온열질환자 수 (명)', fontproperties=font_prop)
+    ax1.set_xlabel('연령대', fontproperties=font_prop)
+    ax2 = ax1.twinx()
+    ax2.plot(연령대, 인구10만명당, color='red', marker='o')
+    ax2.set_ylabel('인구 10만명당 환자 수', color='red', fontproperties=font_prop)
+    fig.suptitle("연령대별 온열질환자 수 및 인구 10만명당 환자 수", fontsize=14, fontproperties=font_prop)
+    fig.tight_layout()
+    return fig
 
 # ------------------------------
 # 파이어 데이터 로드
@@ -256,7 +267,7 @@ elif menu == "온열질환 예방 대응 방안":
         st.image(map_img, caption="2024년 전국 고령 인구 비율", use_container_width=True)
     with col2:
         st.markdown("#### 📊 연령대별 온열질환자 수")
-        st.pyplot(fig_age)
+        st.pyplot(create_age_figure())
 
     st.markdown("#### 📈 고령 인구 비율과 온열질환자 수 비교")
     left, center, right = st.columns([1, 5, 1])
@@ -337,7 +348,7 @@ elif menu == "전체 보기":
         st.image(map_img, caption="2024년 전국 고령 인구 비율", use_container_width=True)
     with col2:
         st.markdown("#### 📊 연령대별 온열질환자 수")
-        st.pyplot(fig_age)
+        st.pyplot(create_age_figure())
 
     st.markdown("#### 📈 고령 인구 비율과 온열질환자 수 비교")
     left, center, right = st.columns([1, 5, 1])
