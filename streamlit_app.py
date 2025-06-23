@@ -51,7 +51,7 @@ ax2_line = ax1_bar.twinx()
 ax2_line.plot(df_all["지역"], df_all["고령 인구 비율"], color='navy', marker='o', label="고령 인구 비율 (%)")
 ax2_line.set_ylabel("고령 인구 비율 (%)", fontproperties=font_prop)
 
-fig_all_region.suptitle("전국 고령 인구 비율과 온열질환자 수 비교", fontsize=14, fontproperties=font_prop)
+fig_all_region.suptitle("고령 인구 비율과 온열질환자 수 비교", fontsize=14, fontproperties=font_prop)
 fig_all_region.legend(loc="upper left", bbox_to_anchor=(0.1, 0.95), prop=font_prop)
 fig_all_region.tight_layout()
 
@@ -218,7 +218,7 @@ elif menu == "온열질환 예방 대응 방안":
         st.markdown("#### 📊 연령대별 온열질환자 수")
         st.pyplot(fig_age)
 
-    st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
+    st.markdown("#### 📈 고령 인구 비율과 온열질환자 수 비교")
     left, center, right = st.columns([1, 5, 1])
     with center:
         st.pyplot(fig_all_region)
@@ -299,7 +299,7 @@ elif menu == "전체 보기":
         st.markdown("#### 📊 연령대별 온열질환자 수")
         st.pyplot(fig_age)
 
-    st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
+    st.markdown("#### 📈 고령 인구 비율과 온열질환자 수 비교")
     left, center, right = st.columns([1, 5, 1])
     with center:
         st.pyplot(fig_all_region)
