@@ -31,10 +31,10 @@ ax1.set_xlabel('연령대', fontproperties=font_prop)
 ax1.tick_params(axis='y')
 
 # 전체 시도 그래프 (고령인구 비율 vs 온열질환자 수)
-region_all = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '강원',
+region_all = ['인천', '광주', '대전', '울산', '세종', '경기', '강원',
               '충북', '충남', '전북', '전남', '경북', '경남', '제주']
-환자수_all = [750, 950, 880, 620, 590, 640, 610, 430, 610, 810, 720, 760, 850, 920, 1010, 840, 700]
-고령비율_all = [15.2, 20.3, 19.8, 16.4, 17.1, 18.0, 17.5, 15.9, 17.2, 26.8, 24.5, 25.2, 26.7, 27.3, 26.0, 24.8, 20.0]
+환자수_all = [620, 590, 640, 610, 430, 610, 810, 720, 760, 850, 920, 1010, 840, 700]
+고령비율_all = [16.4, 17.1, 18.0, 17.5, 15.9, 17.2, 26.8, 24.5, 25.2, 26.7, 27.3, 26.0, 24.8, 20.0]
 
 df_all = pd.DataFrame({
     "지역": region_all,
@@ -218,6 +218,11 @@ elif menu == "온열질환 예방 대응 방안":
         st.markdown("#### 📊 연령대별 온열질환자 수")
         st.pyplot(fig_age)
 
+    st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
+    left, center, right = st.columns([1, 5, 1])
+    with center:
+        st.pyplot(fig_all_region)
+
     # 결론 및 정책 요약
     st.markdown("""
     <br>
@@ -294,11 +299,10 @@ elif menu == "전체 보기":
         st.markdown("#### 📊 연령대별 온열질환자 수")
         st.pyplot(fig_age)
 
-    
-    #st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
-    #left, center, right = st.columns([1, 5, 1])
-    #with center:
-    #    st.pyplot(fig_all_region)
+    st.markdown("#### 📈 고령 인구 비율 vs 온열환자 수")
+    left, center, right = st.columns([1, 5, 1])
+    with center:
+        st.pyplot(fig_all_region)
 
     # 결론 및 정책 요약
     st.markdown("""
